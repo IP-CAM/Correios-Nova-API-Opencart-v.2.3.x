@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>Correios Online e Offline PRO [Loja5]</name>
+	<version>1.0</version>
+	<author>Bruno Alencar - www.loja5.com.br</author>
+	<code>correios-online-offline-pro-loja5</code>
+	<description></description>
+	
+	<file path="admin/controller/common/column_left.php">
+		<operation>
+			<notes></notes>
+			<search index="" regex="false" trim="false"><![CDATA[$customer = array();]]></search>
+			<add offset="0" trim="false" position="before"><![CDATA[
+			$status_correiospro5 = $this->config->get('correiospro5_status');
+			if($status_correiospro5==1){
+				$correiospro5 = array();
+				$correiospro5[] = array(
+					'name'	   => 'Servi&ccedil;os Cadastrados',
+					'href'     => $this->url->link('extension/shipping/correiospro5', 'tab=servicos&token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);
+				$correiospro5[] = array(
+					'name'	   => 'Tabelas Offline',
+					'href'     => $this->url->link('extension/shipping/correiospro5/tabelas', 'token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);
+				$correiospro5[] = array(
+					'name'	   => 'Faixas de CEPs',
+					'href'     => $this->url->link('extension/shipping/correiospro5/faixas', 'token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);
+				$correiospro5[] = array(
+					'name'	   => 'Imprimir Etiquetas',
+					'href'     => $this->url->link('extension/shipping/correiospro5/etiquetas', 'token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);
+				$correiospro5[] = array(
+					'name'	   => 'Configura&ccedil;&otilde;es',
+					'href'     => $this->url->link('extension/shipping/correiospro5', 'token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);
+				$correiospro5[] = array(
+					'name'	   => 'Logs',
+					'href'     => $this->url->link('extension/shipping/correiospro5/logs', 'token=' . $this->session->data['token'], true),
+					'children' => array()		
+				);
+				if ($correiospro5) {
+					$data['menus'][] = array(
+						'id'       => 'menu-correiospro5',
+						'icon'	   => 'fa-truck', 
+						'name'	   => 'Fretes Correios',
+						'href'     => '',
+						'children' => $correiospro5
+					);	
+				}				
+			}
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="admin/controller/common/menu.php">
+		<operation>
+			<notes></notes>
+			<search index="" regex="false" trim="false"><![CDATA[$this->load->language('common/menu');]]></search>
+			<add offset="0" trim="false" position="after"><![CDATA[
+			$status_correiospro5 = $this->config->get('correiospro5_status');
+			if($status_correiospro5==1){
+				$data['correiospro5_config'] = $this->url->link('shipping/correiospro5', 'token=' . $this->session->data['token'], true);
+				$data['correiospro5_servicos'] = $this->url->link('shipping/correiospro5', 'tab=servicos&token=' . $this->session->data['token'], true);
+				$data['correiospro5_tabelas'] = $this->url->link('shipping/correiospro5/tabelas', 'token=' . $this->session->data['token'], true);
+				$data['correiospro5_faixas'] = $this->url->link('shipping/correiospro5/faixas', 'token=' . $this->session->data['token'], true);
+				$data['correiospro5_etiquetas'] = $this->url->link('shipping/correiospro5/etiquetas', 'token=' . $this->session->data['token'], true);
+				$data['correiospro5_logs'] = $this->url->link('shipping/correiospro5/logs', 'token=' . $this->session->data['token'], true);
+			}
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="admin/view/template/common/menu.tpl">
+		<operation>
+			<notes></notes>
+			<search index="" regex="false" trim="false"><![CDATA[<li id="customer"><a class="parent"><i class="fa fa-user fa-fw"></i> <span><?php echo $text_customer; ?></span></a>]]></search>
+			<add offset="0" trim="false" position="before"><![CDATA[
+			<?php if(isset($correiospro5_config)){ ?>
+			<li id="customer"><a class="parent"><i class="fa fa-truck fa-fw"></i> <span>Frete Correios</span></a>
+				<ul>
+				  <li><a href="<?php echo $correiospro5_servicos; ?>">Servi&ccedil;os Ativados</a></li>
+				  <li><a href="<?php echo $correiospro5_tabelas; ?>">Tabelas Offline</a></li>
+				  <li><a href="<?php echo $correiospro5_faixas; ?>">Faixas de CEPs</a></li>
+				  <li><a href="<?php echo $correiospro5_etiquetas; ?>">Imprimir Etiquetas</a></li>
+				  <li><a href="<?php echo $correiospro5_config; ?>">Configura&ccedil;&otilde;es</a></li>
+				  <li><a href="<?php echo $correiospro5_logs; ?>">Logs</a></li>
+				</ul>
+			  </li>
+			<?php } ?>
+			]]></add>
+		</operation>
+	</file>
+	
+</modification>
